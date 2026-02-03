@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { axiosWithToken } from "../Pages/auth/utils/common/axiosWithToken";
+import { axiosWithToken } from "../Pages/auth/utils/common/AxiosWithToken";
 import { apiurl } from "../Pages/auth/utils/common/Common";
 
 const Profile = () => {
