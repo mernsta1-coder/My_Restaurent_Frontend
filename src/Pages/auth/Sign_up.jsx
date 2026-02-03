@@ -27,7 +27,7 @@ const Sign_up = ({ isopen, onclose, openLogin }) => {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/register`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, {
         name,
         email,
         password,
