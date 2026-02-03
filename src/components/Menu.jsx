@@ -6,7 +6,7 @@ import garlic_bread from '../images/garlic_bread.jpg';
 import non_veg_pizza from '../images/non_veg_pizza.jpg';
 import veg_pizza from '../images/veg_pizza.jpg';
 import drinks from '../images/drinks.jpg';
-import { axiosWithToken } from '../Pages/auth/utils/common/axiosWithToken';
+import { axiosWithToken } from '../Pages/auth/utils/common/AxiosWithToken';
 
 const Menu = () => {
 
