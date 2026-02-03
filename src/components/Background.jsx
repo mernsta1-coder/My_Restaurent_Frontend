@@ -7,7 +7,7 @@ const Background = () => {
 
   return (
     <div
-      className="relative mt-16 w-full min-h-[70vh] sm:min-h-[80vh]
+      className="relative gi w-full min-h-[70vh] sm:min-h-[80vh]
                  bg-cover bg-center flex items-center justify-center text-center"
       style={{ backgroundImage: `url(${logo})` }}
     >
