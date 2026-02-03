@@ -36,7 +36,7 @@ const Navbar = ({ cartCount }) => {
     }
 
     try {
-      const res = await axiosWithToken().get("/profile");
+      const res = await axiosWithToken().get("/api/users/profile");
       setUser(res.data.user);
     } catch (err) {
       console.error("Profile fetch failed:", err.message);
