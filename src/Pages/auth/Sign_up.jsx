@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Auth from "../../components/Auth";
-
 import axios from "axios";
 
 const Sign_up = ({ isopen, onclose, openLogin }) => {
@@ -9,17 +8,14 @@ const Sign_up = ({ isopen, onclose, openLogin }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "name") setName(value);
     if (name === "email") setEmail(value);
     if (name === "password") setPassword(value);
     if (name === "confirmPassword") setConfirmPassword(value);
   };
 
-  // Submit handler
   const Submit = async () => {
     if (password !== confirmPassword) {
       alert("Passwords do not match");
@@ -27,27 +23,18 @@ const Sign_up = ({ isopen, onclose, openLogin }) => {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, {
-        name,
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/users/register`,
+        { name, email, password }
+      );
 
-      if (response.data.success) {
-        // Optional alert for feedback
-        alert("Registration successful! Redirecting to login...");
-
-        // Close signup modal
+      if (res.data.success) {
+        alert("Registration successful!");
         onclose();
-
-        // Open login modal
         openLogin();
-      } else {
-        alert(response.data.message || "Registration failed");
       }
     } catch (err) {
-      console.log("Error during registration:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Server error");
+      console.log("Signup error:", err.response?.data || err.message);
     }
   };
 
@@ -55,7 +42,7 @@ const Sign_up = ({ isopen, onclose, openLogin }) => {
     <Auth
       isopen={isopen}
       onClose={onclose}
-      onSubmit={Submit} // triggered by Enter key or button click
+      onSubmit={Submit}
       heading="Sign Up"
       buttonText="Register"
       fields={[
@@ -64,7 +51,7 @@ const Sign_up = ({ isopen, onclose, openLogin }) => {
         { type: "password", name: "password", placeholder: "Enter your password", required: true },
         { type: "password", name: "confirmPassword", placeholder: "Confirm your password", required: true },
       ]}
-      openLogin={openLogin} // allows switching to login manually too
+      openLogin={openLogin}
       onChange={handleChange}
     />
   );

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Auth from "../../components/Auth";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-
-
-const Login = ({ isopen, onclose, openSignup }) => {
+const Login = ({ isopen, onclose, openSignup, onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,19 +16,17 @@ const Login = ({ isopen, onclose, openSignup }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/users/login`,
+        { email, password }
+      );
 
-      if (response.data.success) {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-        console.log("Login successful, token saved:", token);
-        onclose(); // close modal
-        window.location.reload(); // <-- reloads page to rerender
-      } else {
-        console.log("Login failed:", response.data.message);
+      if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
+
+        onclose();            // close modal
+        onLoginSuccess();     // refresh navbar
+        navigate("/menu");    // go forward
       }
     } catch (err) {
       console.log("Login error:", err.response?.data || err.message);
@@ -43,18 +41,8 @@ const Login = ({ isopen, onclose, openSignup }) => {
       heading="Login"
       buttonText="Submit"
       fields={[
-        {
-          name: "email",
-          type: "email",
-          placeholder: "Enter your email",
-          required: true,
-        },
-        {
-          name: "password",
-          type: "password",
-          placeholder: "Enter your password",
-          required: true,
-        },
+        { name: "email", type: "email", placeholder: "Enter your email", required: true },
+        { name: "password", type: "password", placeholder: "Enter your password", required: true },
       ]}
       openSignup={openSignup}
       onChange={handleChange}
