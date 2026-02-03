@@ -107,7 +107,7 @@ const Navbar = ({ cartCount }) => {
               {/* PROFILE */}
               <button
                 className="bg-indigo-600 text-white px-3 py-1 rounded-md"
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate('/profile')}
               >
                 Profile
               </button>
