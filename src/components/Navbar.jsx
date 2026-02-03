@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import Login from "../Pages/auth/Login";
-import Sign_up from "../Pages/auth/Sign_up"; // ✅ FIXED IMPORT
+import Sign_up from "../Pages/auth/Sign_up";
 import { axiosWithToken } from "../Pages/auth/utils/common/AxiosWithToken";
 
 const Navbar = ({ cartCount }) => {
@@ -24,6 +24,7 @@ const Navbar = ({ cartCount }) => {
     sethandLogin(true);
   };
 
+  // 🔹 Fetch logged-in user
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
@@ -33,8 +34,9 @@ const Navbar = ({ cartCount }) => {
         const res = await axiosWithToken().get("/profile");
         setUser(res.data.user);
       } catch (err) {
-        console.log("Error fetching user:", err.message);
+        console.error("Profile fetch failed:", err.message);
         localStorage.removeItem("token");
+        setUser(null);
       }
     };
 
@@ -49,7 +51,9 @@ const Navbar = ({ cartCount }) => {
 
   return (
     <>
+      {/* NAVBAR */}
       <div className="w-full h-16 bg-white flex justify-around items-center fixed top-0 shadow z-50">
+        {/* LOGO */}
         <div className="flex-none w-16 ms-4">
           <h1
             className="text-2xl font-bold cursor-pointer"
@@ -59,34 +63,19 @@ const Navbar = ({ cartCount }) => {
           </h1>
         </div>
 
+        {/* NAV LINKS */}
         <div className="flex justify-evenly w-1/3">
-          <button onClick={() => navigate("/")} className="cursor-pointer">
-            Home
-          </button>
-          <button onClick={() => navigate("/menu")} className="cursor-pointer">
-            Menu
-          </button>
-          <button
-            onClick={() => navigate("/booktable")}
-            className="cursor-pointer"
-          >
-            Booktable
-          </button>
-          <button
-            onClick={() => navigate("/contact")}
-            className="cursor-pointer"
-          >
-            Contact
-          </button>
+          <button onClick={() => navigate("/")}>Home</button>
+          <button onClick={() => navigate("/menu")}>Menu</button>
+          <button onClick={() => navigate("/booktable")}>Booktable</button>
+          <button onClick={() => navigate("/contact")}>Contact</button>
         </div>
 
+        {/* RIGHT SIDE */}
         <div className="flex items-center gap-4">
-          {/* CART ICON */}
+          {/* CART */}
           <div className="relative">
-            <button
-              onClick={() => navigate("/cart")}
-              className="cursor-pointer"
-            >
+            <button onClick={() => navigate("/cart")}>
               <FaCartShopping size={22} />
             </button>
 
@@ -97,26 +86,29 @@ const Navbar = ({ cartCount }) => {
             )}
           </div>
 
+          {/* AUTH SECTION */}
           {!user ? (
-            <input
-              type="button"
-              value="Login"
-              className="bg-blue-600 text-white px-4 py-1 rounded-md cursor-pointer"
+            <button
+              className="bg-blue-600 text-white px-4 py-1 rounded-md"
               onClick={openLogin}
-            />
+            >
+              Login
+            </button>
           ) : (
-            <div className="flex items-center gap-2">
-              <span>Welcome, {user.name}</span>
+            <div className="flex items-center gap-3">
+              <span className="font-medium">Hi, {user.name}</span>
 
+              {/* ADD PROFILE BUTTON */}
               <button
-                className="bg-green-600 text-white px-2 py-1 rounded-md cursor-pointer"
+                className="bg-indigo-600 text-white px-3 py-1 rounded-md"
                 onClick={() => navigate("/profile")}
               >
-                Profile
+                Add Profile
               </button>
 
+              {/* LOGOUT */}
               <button
-                className="bg-red-600 text-white px-2 py-1 rounded-md cursor-pointer"
+                className="bg-red-600 text-white px-3 py-1 rounded-md"
                 onClick={handleLogout}
               >
                 Logout
