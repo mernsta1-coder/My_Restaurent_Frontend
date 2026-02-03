@@ -3,7 +3,7 @@ import Auth from "../../components/Auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ isopen, onclose, openSignup, onLoginSuccess }) => {
+const Login = ({ isopen, onClose, openSignup, onLoginSuccess }) => { // ✅ onClose fixed
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -23,10 +23,9 @@ const Login = ({ isopen, onclose, openSignup, onLoginSuccess }) => {
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
-
-        onclose();            // close modal
-        onLoginSuccess();     // refresh navbar
-        navigate("/menu");    // go forward
+        onClose(); // ✅ close modal
+        if (onLoginSuccess) onLoginSuccess(); // ✅ refresh navbar
+        navigate("/menu");
       }
     } catch (err) {
       console.log("Login error:", err.response?.data || err.message);
@@ -36,13 +35,13 @@ const Login = ({ isopen, onclose, openSignup, onLoginSuccess }) => {
   return (
     <Auth
       isopen={isopen}
-      onClose={onclose}
+      onClose={onClose} // ✅ fixed
       onSubmit={fetchData}
       heading="Login"
       buttonText="Submit"
       fields={[
-        { name: "email", type: "email", placeholder: "Enter your email", required: true },
-        { name: "password", type: "password", placeholder: "Enter your password", required: true },
+        { type: "email", name: "email", placeholder: "Enter your email", required: true },
+        { type: "password", name: "password", placeholder: "Enter your password", required: true },
       ]}
       openSignup={openSignup}
       onChange={handleChange}

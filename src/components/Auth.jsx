@@ -1,10 +1,10 @@
 import React from "react";
 
 const Auth = ({
-  heading,
-  buttonText,
-  fields,
-  isopen,
+  heading = "Login",
+  buttonText = "Submit",
+  fields = [],
+  isopen = false,
   onClose,
   openSignup,
   openLogin,
@@ -15,16 +15,14 @@ const Auth = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center
-                 px-4 sm:px-6 overflow-y-auto"
-      onClick={onClose}
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4 sm:px-6 overflow-y-auto"
+      onClick={onClose} // click outside closes modal
     >
       <div
-        className="relative w-full max-w-sm sm:max-w-md bg-white rounded-2xl
-                   shadow-2xl p-6 sm:p-8 my-10"
-        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8 my-10"
+        onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
       >
-        {/* Close */}
+        {/* Close Button */}
         <button
           className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg"
           onClick={onClose}
@@ -41,7 +39,7 @@ const Auth = ({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit();
+            if (onSubmit) onSubmit();
           }}
         >
           {fields.map((item, index) => (
@@ -52,14 +50,12 @@ const Auth = ({
                 placeholder={item.placeholder}
                 required={item.required}
                 onChange={onChange}
-                className="w-full px-4 py-3 sm:py-3.5 border border-gray-300
-                           rounded-lg text-sm sm:text-base
-                           focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 sm:py-3.5 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           ))}
 
-          {/* Switch Login / Signup */}
+          {/* Switch between Login / Signup */}
           {heading.toLowerCase() === "login" && openSignup && (
             <p className="text-center text-sm text-gray-600 mt-4">
               Don’t have an account?
@@ -86,11 +82,10 @@ const Auth = ({
             </p>
           )}
 
-          {/* Submit */}
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full mt-6 bg-blue-600 hover:bg-blue-700
-                       text-white py-3 rounded-xl font-semibold transition"
+            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"
           >
             {buttonText}
           </button>

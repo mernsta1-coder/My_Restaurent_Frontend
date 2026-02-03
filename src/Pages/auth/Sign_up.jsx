@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Auth from "../../components/Auth";
 import axios from "axios";
 
-const Sign_up = ({ isopen, onclose, openLogin }) => {
+const Sign_up = ({ isopen, onClose, openLogin }) => { // ✅ onClose fixed
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,8 +30,8 @@ const Sign_up = ({ isopen, onclose, openLogin }) => {
 
       if (res.data.success) {
         alert("Registration successful!");
-        onclose();
-        openLogin();
+        onClose(); // ✅ Close modal
+        openLogin(); // ✅ Switch to login
       }
     } catch (err) {
       console.log("Signup error:", err.response?.data || err.message);
@@ -41,7 +41,7 @@ const Sign_up = ({ isopen, onclose, openLogin }) => {
   return (
     <Auth
       isopen={isopen}
-      onClose={onclose}
+      onClose={onClose} // ✅ fixed
       onSubmit={Submit}
       heading="Sign Up"
       buttonText="Register"
