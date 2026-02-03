@@ -80,7 +80,7 @@ const Menu = () => {
 
   return (
     <div className="px-4 sm:px-8 md:px-16">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl text-center mt-16 font-bold">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl text-center  font-bold">
         Our <span className="text-yellow-300">Menu</span>
       </h1>
       <p className="text-center mt-3 mb-6 text-gray-600">
