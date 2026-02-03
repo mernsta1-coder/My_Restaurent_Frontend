@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaCartShopping } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
-import Login from '../Pages/Auth/Login';
-import Sign_up from '../Pages/Auth/Sign_up';
-import { axiosWithToken } from '../Pages/auth/utils/common/axiosWithToken';
+import Login from '../Pages/auth/Login';
+import Sign_up from '../Pages/auth/Login';
+import { axiosWithToken } from '../Pages/auth/utils/common/Common';
 
 const Navbar = ({ cartCount }) => {
 
