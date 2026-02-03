@@ -12,7 +12,10 @@ const Navbar = ({ cartCount }) => {
 
   const navigate = useNavigate();
 
-  const closeModal = () => sethandLogin(false);
+  const closeModal = () => {
+    sethandLogin(false);
+    fetchUser(); // 🔥 LOGIN SUCCESS KE BAAD UI UPDATE
+  };
 
   const openLogin = () => {
     setAuthType("login");
@@ -24,22 +27,25 @@ const Navbar = ({ cartCount }) => {
     sethandLogin(true);
   };
 
-  // 🔹 Fetch logged-in user
+  // 🔹 Fetch user using token
+  const fetchUser = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setUser(null);
+      return;
+    }
+
+    try {
+      const res = await axiosWithToken().get("/profile");
+      setUser(res.data.user);
+    } catch (err) {
+      console.error("Profile fetch failed:", err.message);
+      localStorage.removeItem("token");
+      setUser(null);
+    }
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const res = await axiosWithToken().get("/profile");
-        setUser(res.data.user);
-      } catch (err) {
-        console.error("Profile fetch failed:", err.message);
-        localStorage.removeItem("token");
-        setUser(null);
-      }
-    };
-
     fetchUser();
   }, []);
 
@@ -86,7 +92,7 @@ const Navbar = ({ cartCount }) => {
             )}
           </div>
 
-          {/* AUTH SECTION */}
+          {/* AUTH BUTTONS */}
           {!user ? (
             <button
               className="bg-blue-600 text-white px-4 py-1 rounded-md"
@@ -98,12 +104,12 @@ const Navbar = ({ cartCount }) => {
             <div className="flex items-center gap-3">
               <span className="font-medium">Hi, {user.name}</span>
 
-              {/* ADD PROFILE BUTTON */}
+              {/* PROFILE */}
               <button
                 className="bg-indigo-600 text-white px-3 py-1 rounded-md"
                 onClick={() => navigate("/profile")}
               >
-                Add Profile
+                Profile
               </button>
 
               {/* LOGOUT */}
@@ -122,7 +128,7 @@ const Navbar = ({ cartCount }) => {
       {authType === "login" && (
         <Login
           isopen={handLogin}
-          onclose={closeModal}
+          onclose={closeModal} // 🔥 IMPORTANT
           openSignup={openSignup}
         />
       )}
@@ -131,7 +137,7 @@ const Navbar = ({ cartCount }) => {
       {authType === "signup" && (
         <Sign_up
           isopen={handLogin}
-          onclose={closeModal}
+          onclose={closeModal} // 🔥 IMPORTANT
           openLogin={openLogin}
         />
       )}
