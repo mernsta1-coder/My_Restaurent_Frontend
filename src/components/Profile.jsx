@@ -15,7 +15,7 @@ const Profile = () => {
         const [userRes, bookingRes, messageRes] = await Promise.all([
           axiosWithToken().get(`/api/users/profile`),
           axiosWithToken().get(`/api/users/booking/all`),
-          axiosWithToken().get(`/api/users/contact/contact`),
+          axiosWithToken().get(`/api/users/contact/get/contact`),
         ]);
 
         setUser(userRes.data.user);
