@@ -3,7 +3,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import Login from '../Pages/auth/Login';
 import Sign_up from '../Pages/auth/Login';
-import { axiosWithToken } from '../Pages/auth/utils/common/Common';
+import { axiosWithToken } from '../Pages/auth/utils/common/AxiosWithToken';
 
 const Navbar = ({ cartCount }) => {
 
