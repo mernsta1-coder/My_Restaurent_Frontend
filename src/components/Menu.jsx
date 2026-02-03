@@ -57,7 +57,7 @@ const Menu = () => {
 
   const addToCart = async (item) => {
     try {
-      const res = await axiosWithToken().post("/api/cart/add", {
+      const res = await axiosWithToken().post("/api/users/cart/add", {
         productId: item.id,
         name: item.name,
         price: item.price,

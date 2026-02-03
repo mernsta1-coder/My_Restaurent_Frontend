@@ -24,7 +24,7 @@ const Booktable = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${apiurl}/api/booking/book`,
+      const res = await axios.post(`${apiurl}/api/users/booking/book`,
         formData
       );
 

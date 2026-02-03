@@ -33,7 +33,7 @@ const Contact = () => {
 
       const API = import.meta.env.VITE_API_URL;
 
-      const res = await axios.post(`${apiurl}/api/contact/contact`,
+      const res = await axios.post(`${apiurl}/api/users/contact/contact`,
         formData
       );
 

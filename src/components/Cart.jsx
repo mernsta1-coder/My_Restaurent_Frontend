@@ -9,7 +9,7 @@ const Cart = () => {
 
   const fetchCart = async () => {
     try {
-      const res = await axiosWithToken().get("/api/cart/get");
+      const res = await axiosWithToken().get("/api/users/cart/get");
 
       if (res.data.success) {
         setCart(res.data.cart.items || []);
@@ -28,7 +28,7 @@ const Cart = () => {
 
   const removeItem = async (productId) => {
     try {
-      await axiosWithToken().delete(`/api/cart/${productId}`);
+      await axiosWithToken().delete(`/api/users/cart/delete/${productId}`);
       fetchCart();
     } catch (err) {
       console.log(err.response?.data || err.message);
@@ -37,7 +37,7 @@ const Cart = () => {
 
   const updateQuantity = async (productId, quantity) => {
     try {
-      await axiosWithToken().put("/api/cart/update", {
+      await axiosWithToken().put("/api/users/cart/update", {
         productId,
         quantity,
       });

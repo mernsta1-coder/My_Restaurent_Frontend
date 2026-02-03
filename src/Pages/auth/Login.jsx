@@ -16,7 +16,7 @@ const Login = ({ isopen, onclose, openSignup }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}api/users/login`, {
         email,
         password,
       });
