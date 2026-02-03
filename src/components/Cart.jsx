@@ -10,11 +10,9 @@ const Cart = () => {
   const fetchCart = async () => {
     try {
       const res = await axiosWithToken().get("/api/users/cart/get");
-
       if (res.data.success) {
         setCart(res.data.cart.items || []);
       }
-
       setLoading(false);
     } catch (err) {
       console.log(err.response?.data || err.message);
@@ -27,25 +25,16 @@ const Cart = () => {
   }, []);
 
   const removeItem = async (productId) => {
-    try {
-      await axiosWithToken().delete(`/api/users/cart/delete/${productId}`);
-      fetchCart();
-    } catch (err) {
-      console.log(err.response?.data || err.message);
-    }
+    await axiosWithToken().delete(`/api/users/cart/delete/${productId}`);
+    fetchCart();
   };
 
   const updateQuantity = async (productId, quantity) => {
-    try {
-      await axiosWithToken().put("/api/users/cart/update", {
-        productId,
-        quantity,
-      });
-
-      fetchCart();
-    } catch (err) {
-      console.log(err.response?.data || err.message);
-    }
+    await axiosWithToken().put("/api/users/cart/update", {
+      productId,
+      quantity,
+    });
+    fetchCart();
   };
 
   const subtotal = cart.reduce(
@@ -54,23 +43,18 @@ const Cart = () => {
   );
 
   const handleCheckout = () => {
-    const randomOrderNo = Math.floor(100000 + Math.random() * 900000);
-    setOrderNumber(randomOrderNo);
+    setOrderNumber(Math.floor(100000 + Math.random() * 900000));
     setOrderConfirmed(true);
   };
 
-  const closeModal = () => {
-    setOrderConfirmed(false);
-  };
-
   if (loading) {
-    return <h2 className="text-center mt-20">Loading Cart...</h2>;
+    return <h2 className="text-center mt-24">Loading Cart...</h2>;
   }
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 px-4">
-      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-4 sm:p-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">
           Your Cart
         </h2>
 
@@ -81,23 +65,29 @@ const Cart = () => {
             {cart.map((item) => (
               <div
                 key={item.productId}
-                className="flex items-center justify-between border-b pb-4"
+                className="border-b pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
               >
+                {/* Left */}
                 <div className="flex items-center gap-4">
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-20 h-20 rounded-lg object-cover"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover"
                   />
                   <div>
-                    <h3 className="font-semibold text-lg">{item.name}</h3>
-                    <p className="text-gray-500 text-sm">${item.price}</p>
+                    <h3 className="font-semibold text-base sm:text-lg">
+                      {item.name}
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      ${item.price}
+                    </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                {/* Right */}
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                   <button
-                    className="px-3 py-1 border rounded cursor-pointer"
+                    className="px-3 py-1 border rounded"
                     onClick={() =>
                       updateQuantity(
                         item.productId,
@@ -108,12 +98,12 @@ const Cart = () => {
                     -
                   </button>
 
-                  <span className="px-3 py-1 border rounded-md cursor-pointer">
+                  <span className="px-3 py-1 border rounded-md">
                     {item.quantity}
                   </span>
 
                   <button
-                    className="px-3 py-1 border rounded cursor-pointer"
+                    className="px-3 py-1 border rounded"
                     onClick={() =>
                       updateQuantity(item.productId, item.quantity + 1)
                     }
@@ -121,12 +111,12 @@ const Cart = () => {
                     +
                   </button>
 
-                  <span className="font-semibold ">
+                  <span className="font-semibold min-w-[70px]">
                     ${(item.price * item.quantity).toFixed(2)}
                   </span>
 
                   <button
-                    className="bg-red-600 text-white px-3 py-1 rounded cursor-pointer"
+                    className="bg-red-600 text-white px-3 py-1 rounded"
                     onClick={() => removeItem(item.productId)}
                   >
                     Remove
@@ -140,15 +130,15 @@ const Cart = () => {
         {cart.length > 0 && (
           <>
             <div className="mt-8 border-t pt-6">
-              <div className="flex justify-between text-xl font-bold text-gray-800 mt-4">
+              <div className="flex justify-between text-lg sm:text-xl font-bold">
                 <span>Total</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
             </div>
 
             <button
-              type="button"
-              className="w-full mt-8 bg-blue-600 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+              className="w-full mt-8 bg-blue-600 text-white py-3 rounded-lg
+                         font-semibold hover:bg-blue-700 transition"
               onClick={handleCheckout}
             >
               Proceed to Checkout
@@ -157,20 +147,23 @@ const Cart = () => {
         )}
       </div>
 
-      {/* Popup Modal (without dark background) */}
+      {/* Order Popup */}
       {orderConfirmed && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-          <div className="bg-white rounded-xl p-8 max-w-sm w-full text-center shadow-lg pointer-events-auto">
-            <h3 className="text-2xl font-bold mb-4">Order Confirmed! 🎉</h3>
-            <p className="text-lg mb-2">
-              Your Order Number: <span className="font-mono">{orderNumber}</span>
+        <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-xl p-6 sm:p-8 max-w-sm w-full text-center shadow-xl">
+            <h3 className="text-xl sm:text-2xl font-bold mb-4">
+              Order Confirmed 🎉
+            </h3>
+            <p className="mb-2">
+              Order No:{" "}
+              <span className="font-mono font-semibold">{orderNumber}</span>
             </p>
             <p className="text-gray-700 mb-4">
-              Please go to the counter for confirming your order.
+              Please go to the counter to confirm your order.
             </p>
             <button
-              onClick={closeModal}
-              className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+              onClick={() => setOrderConfirmed(false)}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               Close
             </button>

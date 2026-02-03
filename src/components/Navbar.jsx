@@ -7,36 +7,34 @@ import { axiosWithToken } from "../Pages/auth/utils/common/AxiosWithToken";
 
 const Navbar = ({ cartCount }) => {
   const [authType, setAuthType] = useState("login");
-  const [handLogin, sethandLogin] = useState(false);
+  const [handLogin, setHandLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const closeModal = () => {
-    sethandLogin(false);
-    fetchUser(); // 🔥 LOGIN SUCCESS KE BAAD UI UPDATE
+    setHandLogin(false);
+    fetchUser(); // Update UI after login/signup
   };
 
   const openLogin = () => {
     setAuthType("login");
-    sethandLogin(true);
+    setHandLogin(true);
   };
 
   const openSignup = () => {
     setAuthType("signup");
-    sethandLogin(true);
+    setHandLogin(true);
   };
 
-  // 🔹 Fetch user using token
+  // Fetch user profile
   const fetchUser = async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      setUser(null);
-      return;
-    }
+    if (!token) return setUser(null);
 
     try {
-      const res = await axiosWithToken().get(`/api/users/profile`);
+      const res = await axiosWithToken().get("/api/users/profile");
       setUser(res.data.user);
     } catch (err) {
       console.error("Profile fetch failed:", err.message);
@@ -58,88 +56,94 @@ const Navbar = ({ cartCount }) => {
   return (
     <>
       {/* NAVBAR */}
-      <div className="w-full h-16 bg-white flex justify-around items-center fixed top-0 shadow z-50">
-        {/* LOGO */}
-        <div className="flex-none w-16 ms-4">
+      <nav className="fixed w-full bg-white shadow z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 h-16 flex items-center justify-between">
+          
+          {/* LOGO */}
           <h1
             className="text-2xl font-bold cursor-pointer"
             onClick={() => navigate("/menu")}
           >
             Order
           </h1>
-        </div>
 
-        {/* NAV LINKS */}
-        <div className="flex justify-evenly w-1/3">
-          <button onClick={() => navigate("/")}>Home</button>
-          <button onClick={() => navigate("/menu")}>Menu</button>
-          <button onClick={() => navigate("/booktable")}>Booktable</button>
-          <button onClick={() => navigate("/contact")}>Contact</button>
-        </div>
-
-        {/* RIGHT SIDE */}
-        <div className="flex items-center gap-4">
-          {/* CART */}
-          <div className="relative">
-            <button onClick={() => navigate("/cart")}>
-              <FaCartShopping size={22} />
-            </button>
-
-            {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 rounded-full">
-                {cartCount}
-              </span>
-            )}
+          {/* NAV LINKS: Hidden on mobile */}
+          <div className="hidden md:flex space-x-6">
+            <button onClick={() => navigate("/")}>Home</button>
+            <button onClick={() => navigate("/menu")}>Menu</button>
+            <button onClick={() => navigate("/booktable")}>Book Table</button>
+            <button onClick={() => navigate("/contact")}>Contact</button>
           </div>
 
-          {/* AUTH BUTTONS */}
-          {!user ? (
-            <button
-              className="bg-blue-600 text-white px-4 py-1 rounded-md"
-              onClick={openLogin}
-            >
-              Login
-            </button>
-          ) : (
-            <div className="flex items-center gap-3">
-              <span className="font-medium">Hi, {user.name}</span>
-
-              {/* PROFILE */}
-              <button
-                className="bg-indigo-600 text-white px-3 py-1 rounded-md"
-                onClick={() => navigate('/profile')}
-              >
-                Profile
+          {/* RIGHT SIDE */}
+          <div className="flex items-center gap-4">
+            {/* CART */}
+            <div className="relative">
+              <button onClick={() => navigate("/cart")}>
+                <FaCartShopping size={22} />
               </button>
-
-              {/* LOGOUT */}
-              <button
-                className="bg-red-600 text-white px-3 py-1 rounded-md"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 rounded-full">
+                  {cartCount}
+                </span>
+              )}
             </div>
-          )}
+
+            {/* AUTH BUTTONS */}
+            {!user ? (
+              <button
+                className="bg-blue-600 text-white px-4 py-1 rounded-md"
+                onClick={openLogin}
+              >
+                Login
+              </button>
+            ) : (
+              <div className="flex items-center gap-3">
+                <span className="font-medium hidden sm:inline">Hi, {user.name}</span>
+                <button
+                  className="bg-indigo-600 text-white px-3 py-1 rounded-md"
+                  onClick={() => navigate("/profile")}
+                >
+                  Profile
+                </button>
+                <button
+                  className="bg-red-600 text-white px-3 py-1 rounded-md"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+
+            {/* MOBILE MENU BUTTON */}
+            <button
+              className="md:hidden text-xl font-bold"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              ☰
+            </button>
+          </div>
         </div>
-      </div>
+
+        {/* MOBILE MENU */}
+        {menuOpen && (
+          <div className="md:hidden bg-white px-4 pt-2 pb-4 flex flex-col gap-3">
+            <button onClick={() => {navigate("/"); setMenuOpen(false);}}>Home</button>
+            <button onClick={() => {navigate("/menu"); setMenuOpen(false);}}>Menu</button>
+            <button onClick={() => {navigate("/booktable"); setMenuOpen(false);}}>Book Table</button>
+            <button onClick={() => {navigate("/contact"); setMenuOpen(false);}}>Contact</button>
+          </div>
+        )}
+      </nav>
 
       {/* LOGIN MODAL */}
       {authType === "login" && (
-        <Login
-          isopen={handLogin}
-          onclose={closeModal} // 🔥 IMPORTANT
-          openSignup={openSignup}
-        />
+        <Login isopen={handLogin} onClose={closeModal} openSignup={openSignup} />
       )}
 
       {/* SIGNUP MODAL */}
       {authType === "signup" && (
-        <Sign_up
-          isopen={handLogin}
-          onclose={closeModal} // 🔥 IMPORTANT
-          openLogin={openLogin}
-        />
+        <Sign_up isopen={handLogin} onClose={closeModal} openLogin={openLogin} />
       )}
     </>
   );

@@ -15,30 +15,32 @@ const Auth = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center
+                 px-4 sm:px-6 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 relative mt-10"
+        className="relative w-full max-w-sm sm:max-w-md bg-white rounded-2xl
+                   shadow-2xl p-6 sm:p-8 my-10"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
+        {/* Close */}
         <button
-          className="absolute top-4 right-4 text-gray-500 cursor-pointer hover:text-black text-lg"
+          className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg"
           onClick={onClose}
         >
           ✕
         </button>
 
         {/* Heading */}
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-6">
           {heading}
         </h1>
 
         {/* Form */}
         <form
           onSubmit={(e) => {
-            e.preventDefault(); // prevent page reload
+            e.preventDefault();
             onSubmit();
           }}
         >
@@ -50,20 +52,21 @@ const Auth = ({
                 placeholder={item.placeholder}
                 required={item.required}
                 onChange={onChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg
+                className="w-full px-4 py-3 sm:py-3.5 border border-gray-300
+                           rounded-lg text-sm sm:text-base
                            focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           ))}
 
-          {/* Switch Between Login/Signup */}
+          {/* Switch Login / Signup */}
           {heading.toLowerCase() === "login" && openSignup && (
             <p className="text-center text-sm text-gray-600 mt-4">
               Don’t have an account?
               <button
                 type="button"
-                className="text-blue-600 font-semibold ml-1 hover:underline cursor-pointer"
-                onClick={openSignup} // switch to signup modal
+                className="text-blue-600 font-semibold ml-1 hover:underline"
+                onClick={openSignup}
               >
                 Sign Up
               </button>
@@ -75,19 +78,19 @@ const Auth = ({
               Already have an account?
               <button
                 type="button"
-                className="text-blue-600 font-semibold ml-1 hover:underline cursor-pointer"
-                onClick={openLogin} // switch to login modal
+                className="text-blue-600 font-semibold ml-1 hover:underline"
+                onClick={openLogin}
               >
                 Login
               </button>
             </p>
           )}
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
-            type="submit" // important for Enter key
-            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white
-                       py-3 rounded-xl font-semibold transition cursor-pointer"
+            type="submit"
+            className="w-full mt-6 bg-blue-600 hover:bg-blue-700
+                       text-white py-3 rounded-xl font-semibold transition"
           >
             {buttonText}
           </button>
