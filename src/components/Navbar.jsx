@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import Login from "../Pages/auth/Login";
-import Sign_up from "../Pages/auth/Sign_up"; // ✅ FIXED IMPORT
+import Sign_up from "../Pages/auth/Sign_up"; // ✅ fixed import
 import { axiosWithToken } from "../Pages/auth/utils/common/AxiosWithToken";
 
 const Navbar = ({ cartCount }) => {
@@ -130,7 +130,7 @@ const Navbar = ({ cartCount }) => {
       {authType === "login" && (
         <Login
           isopen={handLogin}
-          onclose={closeModal}
+          onClose={closeModal} // ✅ fixed prop name
           openSignup={openSignup}
         />
       )}
@@ -139,7 +139,7 @@ const Navbar = ({ cartCount }) => {
       {authType === "signup" && (
         <Sign_up
           isopen={handLogin}
-          onclose={closeModal}
+          onClose={closeModal} // ✅ fixed prop name
           openLogin={openLogin}
         />
       )}

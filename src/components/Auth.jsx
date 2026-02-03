@@ -5,7 +5,7 @@ const Auth = ({
   buttonText,
   fields,
   isopen,
-  onClose,
+  onClose, // ✅ must match Navbar
   openSignup,
   openLogin,
   onChange,
@@ -63,7 +63,7 @@ const Auth = ({
               <button
                 type="button"
                 className="text-blue-600 font-semibold ml-1 hover:underline cursor-pointer"
-                onClick={openSignup} // switch to signup modal
+                onClick={openSignup}
               >
                 Sign Up
               </button>
@@ -76,7 +76,7 @@ const Auth = ({
               <button
                 type="button"
                 className="text-blue-600 font-semibold ml-1 hover:underline cursor-pointer"
-                onClick={openLogin} // switch to login modal
+                onClick={openLogin}
               >
                 Login
               </button>
@@ -85,7 +85,7 @@ const Auth = ({
 
           {/* Submit Button */}
           <button
-            type="submit" // important for Enter key
+            type="submit"
             className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white
                        py-3 rounded-xl font-semibold transition cursor-pointer"
           >
